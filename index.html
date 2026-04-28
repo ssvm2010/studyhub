@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>11th Study Hub 📚</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+input,textarea{user-select:text}
+:root{
+--blue:#2563eb;--blue-s:#eff6ff;--green:#16a34a;--green-s:#f0fdf4;
+--bg:#f1f5f9;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+--sp:#0a0a18;--sc:#12122a;--sb:#1a1a35;
+--pk:#ff4da6;--pk2:#e91e8c;--pu:#9333ea;--pu2:#7c3aed;
+--st:#f0e6ff;--sm:#9ca3af;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;color:var(--text);overflow-x:hidden}
+
+/* TOPBAR */
+.topbar{background:var(--blue);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 16px rgba(37,99,235,.35)}
+.topbar h1{font-size:16px;font-weight:900}
+.topbar small{font-size:10px;opacity:.7;display:block}
+.badge{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:800}
+
+/* TABS */
+.stabs{display:flex;background:#fff;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none;position:sticky;top:52px;z-index:40}
+.stabs::-webkit-scrollbar{display:none}
+.stab{padding:9px 14px;font-size:11px;font-weight:800;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;transition:.2s;flex-shrink:0}
+.stab.on{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* PANEL */
+.panel{display:none;padding:12px;max-width:720px;margin:0 auto;padding-bottom:70px}
+.panel.on{display:block}
+
+/* CHAPTER */
+.chap{background:var(--card);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.07);border:1px solid var(--border)}
+.chap-hd{padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer}
+.chap-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.chap-hd h3{font-size:13px;font-weight:800;line-height:1.3}
+.chap-hd p{font-size:10px;color:var(--muted);margin-top:2px}
+.chev{margin-left:auto;font-size:11px;color:var(--muted);transition:.3s;flex-shrink:0}
+.chap-hd.open .chev{transform:rotate(180deg)}
+.chap-bd{display:none;padding:0 14px 14px}
+.chap-bd.open{display:block}
+
+/* MARK FILTER */
+.mark-filter{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;background:#f8fafc;border-radius:10px}
+.mf-btn{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--muted);transition:.2s}
+.mf-btn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.mf-btn.on.g1{background:#f59e0b;border-color:#f59e0b}
+.mf-btn.on.g2{background:#3b82f6;border-color:#3b82f6}
+.mf-btn.on.g3{background:#8b5cf6;border-color:#8b5cf6}
+.mf-btn.on.g5{background:#10b981;border-color:#10b981}
+.mf-btn.on.g10{background:#ef4444;border-color:#ef4444}
+
+/* Q-CARDS */
+.q-section{margin-bottom:14px}
+.q-section-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;margin:10px 0 6px;display:flex;align-items:center;gap:6px}
+.qmark-1 .q-section-title{color:#f59e0b}
+.qmark-2 .q-section-title{color:#3b82f6}
+.qmark-3 .q-section-title{color:#8b5cf6}
+.qmark-5 .q-section-title{color:#10b981}
+.qmark-10 .q-section-title{color:#ef4444}
+.q-badge{border-radius:5px;padding:2px 7px;font-size:10px;font-weight:900;color:#fff}
+.b1{background:#f59e0b}.b2{background:#3b82f6}.b3{background:#8b5cf6}.b5{background:#10b981}.b10{background:#ef4444}
+.q-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.q-card-hd{padding:9px 12px;display:flex;align-items:flex-start;gap:8px;cursor:pointer}
+.q-card-hd .qnum{width:20px;height:20px;border-radius:50%;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;color:#fff}
+.q-card-hd .qtext{font-size:12.5px;font-weight:700;line-height:1.4;flex:1}
+.q-card-hd .qarrow{font-size:10px;color:var(--muted);transition:.3s;flex-shrink:0;margin-top:3px}
+.q-card-hd.open .qarrow{transform:rotate(180deg)}
+.q-ans{display:none;padding:0 12px 10px 12px;border-top:1px dashed var(--border)}
+.q-ans.open{display:block}
+.q-ans-body{font-size:12px;line-height:1.75;color:var(--text);padding-top:8px}
+.q-ans-body b{color:var(--blue);font-weight:800}
+.fbox{border-radius:0 8px 8px 0;padding:8px 11px;margin:7px 0;font-family:'Fira Code',monospace;font-size:11.5px;line-height:1.75}
+.fb-b{background:var(--blue-s);border-left:3px solid var(--blue);color:#1e3a8a}
+.fb-g{background:var(--green-s);border-left:3px solid var(--green);color:#14532d}
+.fb-y{background:#fefce8;border-left:3px solid #f59e0b;color:#78350f}
+.fb-r{background:#fff1f2;border-left:3px solid #f43f5e;color:#881337}
+.fb-p{background:#f5f3ff;border-left:3px solid #7c3aed;color:#3b0764}
+.fb-o{background:#fff7ed;border-left:3px solid #ea580c;color:#7c2d12}
+.tag{display:inline-block;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:800;margin:4px 2px 0}
+.tag-r{background:#fee2e2;color:#991b1b}.tag-y{background:#fef9c3;color:#854d0e}.tag-g{background:#dcfce7;color:#166534}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--blue),#818cf8);border-radius:16px;padding:18px;color:#fff;margin-bottom:14px}
+.hero h2{font-size:21px;font-weight:900}
+.hero p{font-size:12px;opacity:.8;margin-top:4px}
+.subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.subj-box{background:rgba(255,255,255,.15);border-radius:10px;padding:10px;cursor:pointer;transition:.15s}
+.subj-box:active{transform:scale(.96)}
+.subj-box .ico{font-size:22px}
+.subj-box b{font-size:12px;display:block;margin-top:4px}
+.subj-box small{font-size:10px;opacity:.7}
+.sec-head{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.tt-slot{background:var(--card);border-radius:8px;padding:8px 12px;margin-bottom:6px;border-left:4px solid var(--blue)}
+.tt-slot b{font-size:12px;display:block}.tt-slot small{font-size:10px;color:var(--muted)}
+.prog-bar{height:5px;background:#e2e8f0;border-radius:3px;margin-top:4px}
+.prog-fill{height:100%;border-radius:3px;background:var(--blue)}
+
+/* SECRET DOT */
+.sdot{position:fixed;bottom:18px;right:18px;width:8px;height:8px;border-radius:50%;background:rgba(120,120,150,.15);border:none;cursor:pointer;z-index:300}
+
+/* ══ PIN SCREEN ══ */
+#pinScr{display:none;position:fixed;inset:0;z-index:800;background:var(--sp);flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#pinScr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(147,51,234,.15) 0%,transparent 60%);pointer-events:none}
+.plock{font-size:40px;animation:bob .8s ease-in-out infinite alternate;position:relative;z-index:1}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+.ptitle{color:var(--st);font-size:22px;font-weight:900;position:relative;z-index:1}
+.pdots{display:flex;gap:14px;position:relative;z-index:1}
+.pdot{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,77,166,.3);background:transparent;transition:.2s}
+.pdot.on{background:var(--pk);border-color:var(--pk);box-shadow:0 0 10px var(--pk)}
+.perr{color:#f87171;font-size:12px;display:none;position:relative;z-index:1}
+.ppad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:216px;position:relative;z-index:1}
+.pkey{height:58px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,77,166,.12);color:var(--st);font-size:20px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.pkey:active{transform:scale(.88);background:rgba(255,77,166,.2)}
+
+/* ══ MESSENGER SHELL ══ */
+#msg{display:none;position:fixed;inset:0;z-index:900;background:var(--sp);flex-direction:column;overflow:hidden}
+.msg-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.msg-bg::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(147,51,234,.08) 0%,transparent 70%);top:-50px;right:-80px;animation:drift1 8s ease-in-out infinite alternate}
+.msg-bg::after{content:'';position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(255,77,166,.06) 0%,transparent 70%);bottom:100px;left:-60px;animation:drift2 10s ease-in-out infinite alternate}
+@keyframes drift1{from{transform:translate(0,0)}to{transform:translate(-30px,40px)}}
+@keyframes drift2{from{transform:translate(0,0)}to{transform:translate(40px,-30px)}}
+.stars{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:var(--o1,.2)}50%{opacity:var(--o2,.8)}}
+
+/* HEADER */
+.mhd{background:rgba(18,18,42,.95);backdrop-filter:blur(20px);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,77,166,.12);position:relative;z-index:2;flex-shrink:0}
+.mhd-left{display:flex;align-items:center;gap:10px}
+.mav-wrap{position:relative}
+.mav{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--pk),var(--pu));display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 14px rgba(255,77,166,.35)}
+.mav-ring{position:absolute;inset:-2px;border-radius:50%;border:2px solid transparent;background:linear-gradient(135deg,var(--pk),var(--pu)) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mname{font-size:14px;font-weight:900;color:var(--st)}
+.mstat-row{display:flex;align-items:center;gap:5px;margin-top:2px}
+.online{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse2 2s infinite}
+@keyframes pulse2{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.mstat{font-size:10px;color:rgba(240,230,255,.38)}
+
+/* Header right buttons */
+.mhd-right{display:flex;align-items:center;gap:8px}
+.backbtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,77,166,.15);border-radius:20px;color:var(--st);font-family:'Nunito',sans-serif;padding:5px 13px;font-size:11px;cursor:pointer;transition:.2s}
+.backbtn:active{background:rgba(255,77,166,.2)}
+/* ★ NEW — Clear chat button in header */
+.clrbtn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:20px;color:#f87171;font-family:'Nunito',sans-serif;padding:5px 11px;font-size:11px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:4px}
+.clrbtn:active{background:rgba(239,68,68,.3)}
+
+/* STORIES */
+.stories{display:flex;gap:10px;padding:10px 14px;overflow-x:auto;scrollbar-width:none;background:rgba(18,18,42,.6);border-bottom:1px solid rgba(255,77,166,.08);position:relative;z-index:2;flex-shrink:0}
+.stories::-webkit-scrollbar{display:none}
+.story-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0}
+.story-ring{width:46px;height:46px;border-radius:50%;padding:2px;background:linear-gradient(135deg,var(--pk),var(--pu),#06b6d4);animation:storyRing 3s linear infinite}
+@keyframes storyRing{to{filter:hue-rotate(360deg)}}
+.story-inner{width:100%;height:100%;border-radius:50%;background:var(--sc);display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid var(--sp)}
+.story-seen .story-ring{background:rgba(255,255,255,.12)!important;animation:none}
+.story-label{font-size:9px;color:rgba(240,230,255,.4);font-weight:700;max-width:46px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.add-story .story-ring{background:rgba(255,77,166,.2)!important;animation:none}
+
+/* DB BAR */
+.dbbar{padding:4px 14px;font-size:10px;display:flex;align-items:center;gap:6px;background:rgba(10,10,24,.8);position:relative;z-index:2;flex-shrink:0;color:rgba(240,230,255,.4)}
+.dbd{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:pulse2 2s infinite}
+.dbd.err{background:#f87171;animation:none}
+
+/* MESSAGE AREA */
+.msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(255,77,166,.2);border-radius:2px}
+.mdiv{text-align:center;font-size:10px;color:rgba(240,230,255,.2);margin:6px 0;position:relative}
+.mdiv::before,.mdiv::after{content:'';position:absolute;top:50%;width:28%;height:1px;background:rgba(255,77,166,.08)}
+.mdiv::before{left:4%}.mdiv::after{right:4%}
+
+/* ★ NEW — Message wrapper (holds sender name + bubble) */
+.msg-wrap{display:flex;flex-direction:column;max-width:78%;animation:popIn .25s cubic-bezier(.34,1.56,.64,1)}
+.msg-wrap.out{align-self:flex-end;align-items:flex-end}
+.msg-wrap.in{align-self:flex-start;align-items:flex-start}
+/* ★ Sender name label */
+.sender-name{font-size:10px;font-weight:900;margin-bottom:3px;padding:0 4px}
+.msg-wrap.out .sender-name{color:rgba(255,77,166,.7);text-align:right}
+.msg-wrap.in .sender-name{color:rgba(124,58,237,.8);text-align:left}
+
+@keyframes popIn{from{opacity:0;transform:scale(.8) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+.bub{border-radius:20px;font-size:13px;line-height:1.5;position:relative}
+.bub.out{background:linear-gradient(135deg,var(--pk2),var(--pu));color:#fff;border-bottom-right-radius:4px;padding:9px 13px;box-shadow:0 4px 16px rgba(233,30,140,.25)}
+.bub.in{background:var(--sc);color:var(--st);border:1px solid rgba(255,77,166,.1);border-bottom-left-radius:4px;padding:9px 13px}
+.bub-meta{display:flex;align-items:center;gap:4px;margin-top:4px;justify-content:flex-end}
+.bub.in .bub-meta{justify-content:flex-start}
+.btime{font-size:10px;opacity:.45}
+.ticks{font-size:11px;color:rgba(255,255,255,.5)}
+.ticks.seen{color:#60a5fa}
+.reaction-row{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.react-badge{background:rgba(255,255,255,.12);border-radius:12px;padding:2px 7px;font-size:12px;cursor:pointer;transition:.15s;border:1px solid rgba(255,77,166,.15)}
+.reply-ref{background:rgba(0,0,0,.2);border-left:3px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 8px;margin-bottom:6px;font-size:11px;opacity:.8}
+.bub.in .reply-ref{background:rgba(255,77,166,.08);border-left-color:var(--pk)}
+
+/* Image bubble */
+.img-wrap{display:flex;flex-direction:column;max-width:78%;align-self:flex-end;animation:popIn .25s cubic-bezier(.34,1.56,.64,1)}
+.img-wrap.in{align-self:flex-start}
+.img-bub img{width:100%;max-width:220px;border-radius:14px;display:block;border:2px solid rgba(255,77,166,.2)}
+.img-bub-meta{display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:4px;padding-right:4px}
+
+/* Reel bubble */
+.rbub{align-self:flex-end;max-width:78%;background:var(--sc);border:1px solid rgba(255,77,166,.18);border-radius:18px;overflow:hidden;animation:popIn .25s cubic-bezier(.34,1.56,.64,1)}
+.rbub.in{align-self:flex-start}
+.rtop{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,77,166,.04)}
+.rico2{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);display:flex;align-items:center;justify-content:center;font-size:19px}
+.rlbl{font-size:12px;font-weight:800;color:var(--st)}
+.rsrc{font-size:10px;color:rgba(240,230,255,.35);margin-top:2px}
+.rcap{padding:6px 12px 10px;font-size:12px;color:rgba(240,230,255,.5)}
+
+/* Voice note */
+.vnote{align-self:flex-end;max-width:78%;background:linear-gradient(135deg,var(--pk2),var(--pu));border-radius:20px;border-bottom-right-radius:4px;padding:10px 14px;display:flex;align-items:center;gap:10px;animation:popIn .25s cubic-bezier(.34,1.56,.64,1)}
+.vnote.in{align-self:flex-start;background:var(--sc);border:1px solid rgba(255,77,166,.12);border-bottom-right-radius:20px;border-bottom-left-radius:4px}
+.vplay{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.vplay:active{transform:scale(.9)}
+.vwave{flex:1;height:28px;display:flex;align-items:center;gap:2px}
+.vbar{flex:1;background:rgba(255,255,255,.4);border-radius:2px;transition:.3s}
+.vbar.in{background:rgba(255,77,166,.4)}
+.vdur{font-size:10px;color:rgba(255,255,255,.6);flex-shrink:0}
+
+/* Typing */
+.typing-ind{align-self:flex-start;background:var(--sc);border:1px solid rgba(255,77,166,.1);border-radius:18px;border-bottom-left-radius:4px;padding:10px 14px;display:none;animation:popIn .25s ease}
+.typing-ind.show{display:flex}
+.td{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,77,166,.5);animation:tdot 1.4s infinite;margin:0 2px}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-8px);opacity:1}}
+
+/* Reply bar */
+#replyBar{display:none;background:rgba(18,18,42,.95);border-top:1px solid rgba(255,77,166,.12);padding:8px 14px;flex-shrink:0;position:relative;z-index:2}
+#replyBar.show{display:flex;align-items:center;gap:10px}
+.reply-preview{flex:1;border-left:3px solid var(--pk);padding-left:8px}
+.reply-preview .rname{font-size:10px;font-weight:800;color:var(--pk)}
+.reply-preview .rtext{font-size:11px;color:rgba(240,230,255,.5);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px}
+.close-reply{background:none;border:none;color:rgba(240,230,255,.4);font-size:18px;cursor:pointer;padding:2px}
+
+/* Input area */
+.inp-area{padding:9px 12px;background:rgba(10,10,24,.97);border-top:1px solid rgba(255,77,166,.08);display:flex;gap:7px;align-items:flex-end;position:relative;z-index:2;flex-shrink:0}
+.inp-actions{display:flex;gap:6px;align-items:flex-end}
+.minp{flex:1;background:var(--sc);border:1px solid rgba(255,77,166,.18);border-radius:22px;padding:9px 16px;color:var(--st);font-family:'Nunito',sans-serif;font-size:13px;outline:none;resize:none;max-height:100px;min-height:40px;line-height:1.4;transition:border-color .2s}
+.minp::placeholder{color:rgba(240,230,255,.2)}
+.minp:focus{border-color:rgba(255,77,166,.4)}
+.ibtn{width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.15s;flex-shrink:0}
+.ibtn:active{transform:scale(.85)}
+.sbtn{background:linear-gradient(135deg,var(--pk2),var(--pu));color:#fff;box-shadow:0 3px 12px rgba(233,30,140,.3)}
+.ebtn,.rbtn2,.pbtn{background:rgba(255,255,255,.06);border:1px solid rgba(255,77,166,.14);color:var(--st)}
+.mic-btn{background:rgba(255,77,166,.12);border:1px solid rgba(255,77,166,.2);color:var(--pk)}
+.mic-btn.recording{background:rgba(255,77,166,.3);animation:rec .8s ease-in-out infinite alternate}
+@keyframes rec{from{box-shadow:0 0 0 0 rgba(255,77,166,.4)}to{box-shadow:0 0 0 8px rgba(255,77,166,0)}}
+
+/* ★ NEW — Sender toggle bar */
+.sender-bar{padding:6px 14px;background:rgba(18,18,42,.7);border-bottom:1px solid rgba(255,77,166,.08);display:flex;align-items:center;gap:8px;position:relative;z-index:2;flex-shrink:0}
+.sender-bar span{font-size:10px;color:rgba(240,230,255,.4);font-weight:700}
+.sender-toggle{display:flex;border-radius:20px;overflow:hidden;border:1px solid rgba(255,77,166,.2)}
+.st-btn{padding:4px 12px;font-size:11px;font-weight:800;cursor:pointer;border:none;background:transparent;color:rgba(240,230,255,.4);font-family:'Nunito',sans-serif;transition:.2s}
+.st-btn.active{background:linear-gradient(135deg,var(--pk2),var(--pu));color:#fff}
+
+/* Emoji picker */
+#emojiPicker{display:none;position:fixed;bottom:65px;left:12px;right:12px;background:rgba(18,18,42,.98);border:1px solid rgba(255,77,166,.15);border-radius:16px;padding:12px;z-index:10;backdrop-filter:blur(20px);max-height:200px;overflow-y:auto}
+#emojiPicker.show{display:block}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.ej{font-size:24px;text-align:center;cursor:pointer;border-radius:8px;padding:4px;transition:.15s}
+.ej:active{background:rgba(255,77,166,.2);transform:scale(1.3)}
+.emoji-cat{font-size:10px;color:rgba(240,230,255,.3);font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:8px 0 4px;grid-column:1/-1}
+
+/* Photo modal */
+#photoModal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.9);flex-direction:column;align-items:center;justify-content:center}
+#photoModal.show{display:flex}
+#photoModal img{max-width:90%;max-height:70vh;border-radius:12px;object-fit:contain}
+.pm-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pm-actions{display:flex;gap:12px;margin-top:16px}
+.pm-btn{background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:20px;padding:8px 16px;font-size:12px;font-family:'Nunito',sans-serif;cursor:pointer}
+
+/* Story viewer */
+#storyViewer{display:none;position:fixed;inset:0;z-index:1100;background:#000;flex-direction:column}
+#storyViewer.show{display:flex}
+.sv-bar{display:flex;gap:4px;padding:10px 14px 0}
+.sv-seg{flex:1;height:2px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden}
+.sv-fill{height:100%;background:#fff;width:0%;transition:width linear}
+.sv-hd{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.sv-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--pk),var(--pu));display:flex;align-items:center;justify-content:center;font-size:15px}
+.sv-name{font-size:13px;font-weight:800;color:#fff}
+.sv-time{font-size:10px;color:rgba(255,255,255,.5)}
+.sv-content{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;font-size:14px;color:#fff;text-align:center;line-height:1.6;white-space:pre-line}
+.sv-close{position:absolute;top:50px;right:14px;background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer}
+.sv-reply{padding:10px 14px 20px;display:flex;gap:8px}
+.sv-inp{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 14px;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;outline:none}
+.sv-inp::placeholder{color:rgba(255,255,255,.3)}
+.sv-send{background:linear-gradient(135deg,var(--pk2),var(--pu));border:none;color:#fff;border-radius:50%;width:36px;height:36px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* ★ NEW — Context menu with delete */
+#ctxMenu{display:none;position:fixed;z-index:1200;background:rgba(18,18,42,.98);border:1px solid rgba(255,77,166,.18);border-radius:14px;padding:6px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.6);min-width:165px}
+#ctxMenu.show{display:block}
+.ctx-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--st);transition:.15s}
+.ctx-item:active{background:rgba(255,77,166,.15)}
+.ctx-item.danger{color:#f87171}
+.ctx-item.danger:active{background:rgba(239,68,68,.15)}
+.ctx-sep{height:1px;background:rgba(255,77,166,.1);margin:4px 6px}
+.ctx-ico{font-size:16px;width:20px;text-align:center}
+
+/* ★ NEW — Confirm delete modal */
+#delModal{display:none;position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px}
+#delModal.show{display:flex}
+.del-box{background:#1e293b;border:1px solid rgba(239,68,68,.3);border-radius:20px;padding:24px;width:100%;max-width:300px;text-align:center}
+.del-box .del-ico{font-size:40px;display:block;margin-bottom:12px}
+.del-box h3{font-size:16px;font-weight:900;color:#f1f5f9;margin-bottom:6px}
+.del-box p{font-size:12px;color:#94a3b8;margin-bottom:20px}
+.del-btns{display:flex;gap:10px}
+.del-cancel{flex:1;padding:10px;border-radius:12px;border:1px solid #334155;background:transparent;color:#94a3b8;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.del-confirm{flex:1;padding:10px;border-radius:12px;border:none;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;cursor:pointer}
+
+/* Hearts float */
+.hf{position:fixed;pointer-events:none;z-index:9999;animation:rise 1.3s ease forwards}
+@keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(.3)}}
+</style>
+</head>
+<body>
+
+<!-- ████ STUDY APP ████ -->
+<div id="studyApp">
+<div class="topbar">
+<div><h1>📖 11th Study Hub</h1><small>CS · Maths · Physics · Chemistry · Tamil · English</small></div>
+<div class="badge">TN Board</div>
+</div>
+<div class="stabs">
+<div class="stab on" onclick="sw('home',this)">🏠 Home</div>
+<div class="stab" onclick="sw('cs',this)">💻 CS</div>
+<div class="stab" onclick="sw('maths',this)">📐 Maths</div>
+<div class="stab" onclick="sw('physics',this)">⚡ Physics</div>
+<div class="stab" onclick="sw('chem',this)">🧪 Chem</div>
+<div class="stab" onclick="sw('tamil',this)">📜 Tamil</div>
+<div class="stab" onclick="sw('english',this)">🔤 English</div>
+<div class="stab" onclick="sw('tt',this)">🗓 Plan</div>
+</div>
+
+<!-- HOME -->
+<div class="panel on" id="p-home">
+<div class="hero">
+<h2>11th Standard 🎓</h2>
+<p>Tamil Nadu State Board — CS + Maths Group</p>
+<div class="subj-grid">
+<div class="subj-box" onclick="sw('cs',document.querySelectorAll('.stab')[1])"><div class="ico">💻</div><b>Computer Science</b><small>14 Chapters</small></div>
+<div class="subj-box" onclick="sw('maths',document.querySelectorAll('.stab')[2])"><div class="ico">📐</div><b>Mathematics</b><small>11 Chapters</small></div>
+<div class="subj-box" onclick="sw('physics',document.querySelectorAll('.stab')[3])"><div class="ico">⚡</div><b>Physics</b><small>10 Chapters</small></div>
+<div class="subj-box" onclick="sw('chem',document.querySelectorAll('.stab')[4])"><div class="ico">🧪</div><b>Chemistry</b><small>14 Chapters</small></div>
+<div class="subj-box" onclick="sw('tamil',document.querySelectorAll('.stab')[5])"><div class="ico">📜</div><b>Tamil</b><small>Prose + Poetry</small></div>
+<div class="subj-box" onclick="sw('english',document.querySelectorAll('.stab')[6])"><div class="ico">🔤</div><b>English</b><small>Grammar + Prose</small></div>
+</div>
+</div>
+<div class="chap"><div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#eff6ff">⭐</div><div><h3>TN Board Mark Weightage</h3><p>150 marks paper pattern</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="fbox fb-b">1 Mark (MCQ+Fill) — 15 Qs = 15 M<br>2 Mark (Very Short) — 6 Qs = 12 M<br>3 Mark (Brief Answer) — 9 Qs = 27 M<br>5 Mark (Paragraph) — 5 Qs = 25 M<br>10 Mark (Essay/Derivation) — 3 Qs = 30 M<br>Practical (CS only) = 41 M<br>──────────────────────────<br>Theory Total = 109 M | Grand Total = 150 M</div>
+<div style="font-size:12px;color:var(--muted);margin-top:8px">💡 <b>Tip:</b> 1-mark & 2-mark = Easy 27M. Don't miss these!</div>
+</div></div>
+</div>
+
+<!-- CS -->
+<div class="panel" id="p-cs">
+<div class="sec-head">💻 Computer Science — All Chapters</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#eff6ff">🖥️</div><div><h3>Ch 1 — Introduction to Computers</h3><p>Types, Generations, I/O, Memory</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="cs1">
+<button class="mf-btn g1 on" onclick="filterMark(this,'cs1',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'cs1',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'cs1',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'cs1',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'cs1',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="cs1-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span> MCQ / Fill in the Blanks</div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">ENIAC stands for ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">Electronic Numerical Integrator And Computer. First general-purpose electronic digital computer (1945).</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">Which generation of computers uses VLSI chips?</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>4th Generation</b> (1971–present) uses VLSI chips.</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">RAM is a ___ memory.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Volatile</b> memory — data is lost when power is off.</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">4</div><div class="qtext">1 KB = ___ bytes</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">1 KB = <b>1024 bytes</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">5</div><div class="qtext">Which device is both input and output?</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Touch screen</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="cs1-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span> Very Short Answer</div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">Differentiate RAM and ROM.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>RAM:</b> Volatile, read/write, temporary.<br><b>ROM:</b> Non-volatile, read only, permanent (BIOS).</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">2</div><div class="qtext">What is Cache Memory?</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">Small ultra-fast memory between CPU and RAM. Types: L1, L2, L3 cache.</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="cs1-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span> Brief Answer</div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Classify computers based on size.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Micro:</b> Desktop, Laptop.<br><b>Mini:</b> PDP-11.<br><b>Mainframe:</b> IBM z-series.<br><b>Super:</b> PARAM, Cray.</div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="cs1-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Explain generations of computers.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">Gen1(1940-56):Vacuum tubes|ENIAC<br>Gen2(1956-63):Transistors|IBM7094<br>Gen3(1964-71):IC chips|IBM360<br>Gen4(1971-now):VLSI|PC,Laptops<br>Gen5(Future):ULSI|AI,NLP</div><span class="tag tag-r">⭐ Often 5 Mark</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="cs1-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">Explain basic organization of a computer.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1. Input Unit:</b> Keyboard, Mouse.<br><b>2. CPU:</b> ALU + CU + Registers.<br><b>3. Memory:</b> RAM (temp), ROM (perm), Secondary.<br><b>4. Output:</b> Monitor, Printer.<br><div class="fbox fb-b">Input → CPU ↔ Memory → Output</div><span class="tag tag-r">⭐ Most important 10 Mark</span></div></div></div>
+</div>
+</div>
+</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#eff6ff">🔢</div><div><h3>Ch 2 — Number Systems</h3><p>Binary, Octal, Hex, Complement</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="cs2">
+<button class="mf-btn g1 on" onclick="filterMark(this,'cs2',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'cs2',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'cs2',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'cs2',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'cs2',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="cs2-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">Base of hexadecimal = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>16</b> (0-9 and A-F)</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">1's complement of 1010 = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>0101</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">(1111)₂ in decimal = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>15</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="cs2-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">Convert (45)₁₀ to Binary.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">45÷2=22R1|22÷2=11R0|11÷2=5R1<br>5÷2=2R1|2÷2=1R0|1÷2=0R1<br>Answer: <b>101101</b></div></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">2</div><div class="qtext">2's complement of 1010 = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">1's comp = 0101; +1 = <b>0110</b></div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="cs2-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Explain 1's and 2's complement.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1's:</b> Flip all bits. 1010→0101<br><b>2's:</b> 1's comp + 1. 0101+1=0110<br><b>Use:</b> Negative numbers & subtraction.</div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="cs2-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Explain number systems with conversions.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Decimal(10)</b> | <b>Binary(2)</b> | <b>Octal(8)</b> | <b>Hex(16)</b><br><div class="fbox fb-b">(45)₁₀: Binary=101101 | Octal=55 | Hex=2D</div><span class="tag tag-r">⭐ Always 5 Mark!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="cs2-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">All number system conversions with examples.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">Dec→Bin(÷2): 13→1101<br>Bin→Dec(×2ⁿ): 1101=13<br>Dec→Oct(÷8): 100→144₈<br>Dec→Hex(÷16): 255→FF<br>Bin→Oct(3bits): 110101→65₈<br>Bin→Hex(4bits): 11010101→D5₁₆<br>1's comp: flip bits<br>2's comp: 1's+1</div></div></div></div>
+</div>
+</div>
+</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#eff6ff">⚡</div><div><h3>Ch 3 — Boolean Algebra & Logic Gates</h3><p>Gates, Truth tables, De Morgan</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="cs3">
+<button class="mf-btn g1 on" onclick="filterMark(this,'cs3',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'cs3',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'cs3',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'cs3',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'cs3',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="cs3-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">Universal gate = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>NAND and NOR</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">A+A' = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">(A·B)' = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>A' + B'</b> (De Morgan)</div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="cs3-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">State De Morgan's theorems.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>T1:</b> (A+B)' = A'·B'<br><b>T2:</b> (A·B)' = A'+B'</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="cs3-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Verify De Morgan's (A·B)'=A'+B' by truth table.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">A B A·B (A·B)' A' B' A'+B'<br>0 0 0 1 1 1 1 ✓<br>0 1 0 1 1 0 1 ✓<br>1 0 0 1 0 1 1 ✓<br>1 1 1 0 0 0 0 ✓</div></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="cs3-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Explain all basic logic gates with truth tables.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>AND:</b> Y=A·B | <b>OR:</b> Y=A+B | <b>NOT:</b> Y=A'<br><b>NAND:</b> Y=(A·B)' | <b>NOR:</b> Y=(A+B)'<br><b>XOR:</b> Y=A⊕B (different→1) | <b>XNOR:</b> (same→1)<br><div class="fbox fb-b">AND:11→1 | OR:01→1 | XOR:01→1,11→0</div><span class="tag tag-r">⭐ Learn all gates!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="cs3-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">Boolean algebra laws and De Morgan's theorems.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">Identity: A+0=A|A·1=A<br>Null: A+1=1|A·0=0<br>Complement: A+A'=1|A·A'=0<br>Idempotent: A+A=A<br>Involution: (A')'=A<br>Commutative/Associative/Distributive<br>Absorption: A+AB=A<br>De Morgan: (A+B)'=A'B' | (AB)'=A'+B'</div></div></div></div>
+</div>
+</div>
+</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#eff6ff">⌨️</div><div><h3>Ch 4-6 — C++ Programming</h3><p>Basics, OOP, Arrays, Functions</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="cs4">
+<button class="mf-btn g1 on" onclick="filterMark(this,'cs4',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'cs4',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'cs4',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'cs4',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'cs4',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="cs4-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">Header file for cout/cin = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>&lt;iostream&gt;</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">Scope resolution operator = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>::</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">Default access specifier in class = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>private</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="cs4-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">while vs do-while.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>while:</b> Entry-controlled — may not execute.<br><b>do-while:</b> Exit-controlled — executes at least once.</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">2</div><div class="qtext">Access specifiers in C++.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>private:</b> Inside class only.<br><b>public:</b> Anywhere.<br><b>protected:</b> Class + derived.</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="cs4-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">C++ prime number program.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">#include&lt;iostream&gt;<br>using namespace std;<br>int main(){int n,i,f=1;cin&gt;&gt;n;<br>for(i=2;i&lt;=n/2;i++)if(n%i==0){f=0;break;}<br>if(f)cout&lt;&lt;"Prime";else cout&lt;&lt;"Not Prime";}</div></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="cs4-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">C++ class for Student details.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-b">class Student{<br> private: int rollno; string name; float mark;<br> public:<br> void setData(int r,string n,float m){rollno=r;name=n;mark=m;}<br> void display(){cout&lt;&lt;rollno&lt;&lt;name&lt;&lt;mark;}<br>};<br>int main(){Student s;s.setData(1,"Ravi",95.5);s.display();}</div><span class="tag tag-r">⭐ Most asked 5 Mark!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="cs4-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">OOP concepts with examples.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1. Encapsulation:</b> Data + functions in class.<br><b>2. Abstraction:</b> Hide implementation (ATM).<br><b>3. Inheritance:</b> Derived class gets base class properties.<br><b>4. Polymorphism:</b> Same name, different behavior.<br><div class="fbox fb-b">class Animal{public:void eat(){}};
+class Dog:public Animal{public:void bark(){}};
+// Dog can call eat() AND bark()</div></div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MATHS -->
+<div class="panel" id="p-maths">
+<div class="sec-head">📐 Mathematics — All Chapters</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#f0fdf4">📐</div><div><h3>Ch 3 — Trigonometry</h3><p>Identities, Compound, Double, Inverse</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="m1">
+<button class="mf-btn g1 on" onclick="filterMark(this,'m1',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'m1',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'m1',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'m1',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'m1',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="m1-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">sin²θ + cos²θ = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">sin⁻¹x + cos⁻¹x = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>π/2</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">sin 30° = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1/2</b><br><div class="fbox fb-g">sin0=0|sin30=1/2|sin45=1/√2|sin60=√3/2|sin90=1</div></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">4</div><div class="qtext">1 + tan²θ = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>sec²θ</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">5</div><div class="qtext">sin2A = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>2 sinA cosA</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="m1-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">sin(A+B) formula.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">sin(A+B) = <b>sinA cosB + cosA sinB</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">2</div><div class="qtext">cos2A in three ways.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">cos²A-sin²A = 2cos²A-1 = 1-2sin²A</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="m1-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Prove sin3A = 3sinA - 4sin³A</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">sin3A=sin(2A+A)=sin2A·cosA+cos2A·sinA<br>=(2sinAcosA)cosA+(1-2sin²A)sinA<br>=2sinAcos²A+sinA-2sin³A<br>=2sinA(1-sin²A)+sinA-2sin³A<br>=<b>3sinA-4sin³A ✓</b></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="m1-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Prove cos3A = 4cos³A - 3cosA</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">cos3A=cos(2A+A)=(2cos²A-1)cosA-(2sinAcosA)sinA<br>=2cos³A-cosA-2sin²AcosA<br>=2cos³A-cosA-2(1-cos²A)cosA<br>=<b>4cos³A-3cosA ✓</b><br><span class="tag tag-r">⭐ 5 Mark always!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="m1-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">All compound/double/triple angle formulas.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-g">sin(A±B)=sinAcosB±cosAsinB<br>cos(A±B)=cosAcosB∓sinAsinB<br>sin2A=2sinAcosA<br>cos2A=cos²A-sin²A=2cos²A-1=1-2sin²A<br>sin3A=3sinA-4sin³A<br>cos3A=4cos³A-3cosA<br>sin⁻¹x+cos⁻¹x=π/2</div></div></div></div>
+</div>
+</div>
+</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#f0fdf4">∞</div><div><h3>Ch 10-11 — Calculus</h3><p>Limits, Derivatives, Rules</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="m2">
+<button class="mf-btn g1 on" onclick="filterMark(this,'m2',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'m2',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'m2',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'m2',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'m2',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="m2-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">lim(x→0) sinx/x = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">d/dx(xⁿ) = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>nxⁿ⁻¹</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">d/dx(eˣ) = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>eˣ</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">4</div><div class="qtext">d/dx(lnx) = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1/x</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">5</div><div class="qtext">d/dx(cosx) = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>-sinx</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="m2-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">d/dx(x³+5x²-3x+7)</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">= <b>3x² + 10x - 3</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">2</div><div class="qtext">Product Rule.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">y=uv → dy/dx = u'v + uv'</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="m2-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">lim(x→1)(x²-1)/(x-1)</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">(x+1)(x-1)/(x-1) = x+1 → lim = <b>2</b></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="m2-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">All differentiation rules.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-g">Power:nxⁿ⁻¹|Const:0|Sum:u'+v'<br>Product:u'v+uv'|Quotient:(u'v-uv')/v²<br>Chain:f'(g(x))·g'(x)<br>sinx→cosx|-sinx|sec²x|secx·tanx<br>eˣ→eˣ|aˣ→aˣlna|lnx→1/x</div><span class="tag tag-r">⭐ Memorize!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="m2-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">Limits and first principles of derivatives.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Standard Limits:</b><br>lim sinx/x=1 | lim tanx/x=1 | lim(1+x)^(1/x)=e<br><b>First Principles:</b><br>f'(x)=lim[f(x+h)-f(x)]/h (h→0)<br>Proof for xⁿ: using binomial → <b>nxⁿ⁻¹ ✓</b></div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- PHYSICS -->
+<div class="panel" id="p-physics">
+<div class="sec-head">⚡ Physics — All Chapters</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#fff7ed">🚀</div><div><h3>Ch 2 — Kinematics & Projectile</h3><p>Equations of motion, Projectile</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="ph1">
+<button class="mf-btn g1 on" onclick="filterMark(this,'ph1',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'ph1',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'ph1',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'ph1',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'ph1',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="ph1-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">SI unit of acceleration = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>m/s²</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">Range is max at angle = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>45°</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">g = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>9.8 m/s²</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="ph1-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">Three equations of motion.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-o">v=u+at | s=ut+½at² | v²=u²+2as</div></div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="ph1-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Projectile formulas.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-o">T=2usinθ/g | H=u²sin²θ/2g | R=u²sin2θ/g</div></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="ph1-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Derive equations of motion graphically.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">From v-t graph:<br>Eq1: slope → v=u+at<br>Eq2: area of trapezium → s=ut+½at²<br>Eq3: eliminate t → v²=u²+2as<span class="tag tag-r">⭐ 5 Mark</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="ph1-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">Derive equations + projectile motion.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-o">v=u+at | s=ut+½at² | v²=u²+2as</div>Projectile: x=ucosθ·t | y=usinθ·t-½gt²<br>T=2usinθ/g | H=u²sin²θ/2g | R=u²sin2θ/g | Rmax=u²/g at 45°</div></div></div>
+</div>
+</div>
+</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#fff7ed">🌍</div><div><h3>Ch 6 — Gravitation</h3><p>Newton's law, Satellites, Escape velocity</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="ph2">
+<button class="mf-btn g1 on" onclick="filterMark(this,'ph2',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'ph2',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'ph2',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'ph2',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'ph2',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="ph2-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">G = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>6.674 × 10⁻¹¹ N m² kg⁻²</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">Escape velocity = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>11.2 km/s</b> = √(2gR)</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">Orbital velocity = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>7.9 km/s</b> = √(gR)</div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="ph2-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">Newton's Law of Gravitation.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">F = Gm₁m₂/r² — every mass attracts every other mass.</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="ph2-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Derive escape velocity.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">KE=PE: ½mv²=GMm/R → v=√(2GM/R)=√(2gR)=<b>11.2 km/s</b></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="ph2-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Kepler's laws.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1st (Orbits):</b> Elliptical orbits, Sun at focus.<br><b>2nd (Areas):</b> Equal areas in equal time.<br><b>3rd (Periods):</b> T² ∝ a³<span class="tag tag-r">⭐ 5 Mark!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="ph2-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">Gravitation complete — Newton, g variation, satellites.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">F=Gm₁m₂/r² | g=GM/R²=9.8m/s²<br>g with height: gₕ=g(R/R+h)² | with depth: g_d=g(1-d/R)<br>Orbital v=√(gR)=7.9km/s | Escape=√(2gR)=11.2km/s<br>Geostationary: T=24h, h=36000km</div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CHEMISTRY -->
+<div class="panel" id="p-chem">
+<div class="sec-head">🧪 Chemistry — All Chapters</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#f5f3ff">⚗️</div><div><h3>Ch 7 — Thermodynamics</h3><p>Laws, Enthalpy, Entropy, Gibbs</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="ch1">
+<button class="mf-btn g1 on" onclick="filterMark(this,'ch1',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'ch1',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'ch1',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'ch1',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'ch1',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="ch1-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">ΔG &lt; 0 means ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Spontaneous</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">ΔU = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>q + w</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">ΔG = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>ΔH - TΔS</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">4</div><div class="qtext">Endothermic: ΔH is ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Positive</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="ch1-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">Exothermic vs Endothermic.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Exo:</b> Heat released. ΔH(-). Combustion.<br><b>Endo:</b> Heat absorbed. ΔH(+). Photosynthesis.</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="ch1-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Hess's Law.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">Total ΔH is same regardless of path. C+O₂→CO₂ always ΔH=-393kJ.</div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="ch1-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">Gibbs energy and spontaneity.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">ΔG=ΔH-TΔS<br><div class="fbox fb-p">ΔG&lt;0→Spontaneous | ΔG=0→Equilibrium | ΔG&gt;0→Non-spontaneous</div>ΔH(-),ΔS(+):Always | ΔH(+),ΔS(-):Never<br>ΔH(-),ΔS(-):Low T | ΔH(+),ΔS(+):High T<span class="tag tag-r">⭐ Often 10 Mark!</span></div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="ch1-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">All 4 laws of thermodynamics.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>Zeroth:</b> Thermal equilibrium transitivity.<br><b>First:</b> ΔU=q+w (energy conserved).<br><b>Second:</b> ΔS_universe≥0.<br><b>Third:</b> S=0 at 0K for perfect crystal.<br>ΔG=ΔH-TΔS → predicts spontaneity.</div></div></div>
+</div>
+</div>
+</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#f5f3ff">⚖️</div><div><h3>Ch 8 — Equilibrium</h3><p>Kc, Kp, pH, Le Chatelier</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="ch2">
+<button class="mf-btn g1 on" onclick="filterMark(this,'ch2',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'ch2',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'ch2',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'ch2',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'ch2',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="ch2-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">pH of pure water = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>7</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">pH + pOH = ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>14</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">Pressure ↑ → equilibrium shifts to ___ moles</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>fewer moles of gas</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="ch2-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">pH if [H⁺]=10⁻³M</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">pH=-log(10⁻³)=<b>3</b> (acidic)</div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">2</div><div class="qtext">Le Chatelier's principle.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">System adjusts to oppose any change and restore equilibrium.</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="ch2-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Kc and Kp relationship.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">Kp=Kc(RT)^Δn. Δn=0→Kp=Kc | Δn>0→Kp>Kc | Δn&lt;0→Kp&lt;Kc</div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="ch2-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">pH scale and buffer solutions.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-p">pH&lt;7→Acidic | pH=7→Neutral | pH&gt;7→Basic</div>Buffer: resists pH change.<br>Acidic: CH₃COOH+CH₃COONa<br>Basic: NH₄OH+NH₄Cl</div></div></div>
+</div>
+<div class="q-section qmark-10" data-mark="10" id="ch2-m10" style="display:none">
+<div class="q-section-title"><span class="q-badge b10">10 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b10">1</div><div class="qtext">Chemical equilibrium + Le Chatelier + Haber's process.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body">Kc=[C]^c[D]^d/[A]^a[B]^b<br>Le Chatelier: ↑conc→shift right | ↑P→fewer moles | ↑T→endothermic direction<br><b>Haber:</b> N₂+3H₂⇌2NH₃. High P✓, 500°C, Fe catalyst.</div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAMIL -->
+<div class="panel" id="p-tamil">
+<div class="sec-head">📜 Tamil — முக்கிய கேள்விகள்</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#fff5f5">📖</div><div><h3>இலக்கணம் (Grammar)</h3><p>எழுத்து, சொல், பொருள்</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="ta1">
+<button class="mf-btn g1 on" onclick="filterMark(this,'ta1',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'ta1',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'ta1',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'ta1',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'ta1',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="ta1-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">தமிழ் எழுத்துக்கள் மொத்தம் ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>247</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">திருக்குறள் குறட்பாக்கள் ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>1330</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">தொல்காப்பியம் எழுதியவர் ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>தொல்காப்பியர்</b></div></div></div>
+</div>
+<div class="q-section qmark-5" data-mark="5" id="ta1-m5" style="display:none">
+<div class="q-section-title"><span class="q-badge b5">5 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b5">1</div><div class="qtext">அகத்திணை ஐந்தினை விளக்குக.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-r">குறிஞ்சி—மலை—புணர்தல்<br>முல்லை—காடு—இருத்தல்<br>மருதம்—வயல்—ஊடல்<br>நெய்தல்—கடல்—இரங்கல்<br>பாலை—பாலை—பிரிதல்</div><span class="tag tag-r">⭐ 5 Mark always!</span></div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ENGLISH -->
+<div class="panel" id="p-english">
+<div class="sec-head">🔤 English Grammar & Literature</div>
+<div class="chap">
+<div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#f0fdf4">📝</div><div><h3>Complete Grammar Reference</h3><p>Tenses, Voice, Speech, Conditionals</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="mark-filter" data-chap="en1">
+<button class="mf-btn g1 on" onclick="filterMark(this,'en1',1)">1 Mark</button>
+<button class="mf-btn g2" onclick="filterMark(this,'en1',2)">2 Mark</button>
+<button class="mf-btn g3" onclick="filterMark(this,'en1',3)">3 Mark</button>
+<button class="mf-btn g5" onclick="filterMark(this,'en1',5)">5 Mark</button>
+<button class="mf-btn g10" onclick="filterMark(this,'en1',10)">10 Mark</button>
+</div>
+<div class="q-section qmark-1" data-mark="1" id="en1-m1">
+<div class="q-section-title"><span class="q-badge b1">1 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">1</div><div class="qtext">Passive Simple Present: ___ + V3</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>is/am/are</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">2</div><div class="qtext">"will" in indirect speech → ___</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>would</b></div></div></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b1">3</div><div class="qtext">Type 1 conditional: If+present, ___+V1</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>will</b></div></div></div>
+</div>
+<div class="q-section qmark-2" data-mark="2" id="en1-m2" style="display:none">
+<div class="q-section-title"><span class="q-badge b2">2 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b2">1</div><div class="qtext">3 types of conditionals.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><b>T1:</b> If+present, will+V1 (real)<br><b>T2:</b> If+past, would+V1 (unreal present)<br><b>T3:</b> If+past perfect, would have+V3 (unreal past)</div></div></div>
+</div>
+<div class="q-section qmark-3" data-mark="3" id="en1-m3" style="display:none">
+<div class="q-section-title"><span class="q-badge b3">3 Mark</span></div>
+<div class="q-card"><div class="q-card-hd" onclick="togQ(this)"><div class="qnum b3">1</div><div class="qtext">Passive voice all tenses.</div><div class="qarrow">▼</div></div><div class="q-ans"><div class="q-ans-body"><div class="fbox fb-g">Pres:is/are+V3 | Past:was/were+V3<br>Future:will be+V3 | Cont:being+V3<br>Perf:has/have been+V3</div></div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- STUDY PLAN -->
+<div class="panel" id="p-tt">
+<div class="sec-head">🗓 Study Plan & Tips</div>
+<div class="chap"><div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#eff6ff">📅</div><div><h3>Weekly Study Schedule</h3></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div style="font-weight:800;font-size:12px;color:var(--blue);margin:8px 0 4px">Mon–Fri</div>
+<div class="tt-slot"><b>5:30–7 AM</b><small>Tamil / English / Chem rotation</small></div>
+<div class="tt-slot" style="border-color:#16a34a"><b>4–6 PM</b><small>Physics formulas + derivations</small></div>
+<div class="tt-slot" style="border-color:#7c3aed"><b>7–9:30 PM</b><small>Maths problems + C++ programs</small></div>
+<div style="font-weight:800;font-size:12px;color:var(--blue);margin:8px 0 4px">Sunday</div>
+<div class="tt-slot" style="border-color:#dc2626"><b>Self Test — All Subjects</b><small>Previous year papers — 3 hrs</small></div>
+<div style="margin-top:12px;padding:10px;background:#f8fafc;border-radius:10px;font-size:12px">
+<b>📌 Priority:</b> CS NumSys → Bool → C++ → Maths Trig → Calculus → Physics Kin → Grav → Chem Thermo → Equil
+</div>
+</div></div>
+<div class="chap"><div class="chap-hd" onclick="tog(this)"><div class="chap-ico" style="background:#f0fdf4">⭐</div><div><h3>Important Topics</h3><p>Most asked in board exams</p></div><span class="chev">▼</span></div>
+<div class="chap-bd">
+<div class="fbox fb-b"><b>CS:</b> Number conv(5M), De Morgan(5M+10M), OOP(10M), Programs(3M+5M)</div>
+<div class="fbox fb-g"><b>Maths:</b> sin3A/cos3A(5M), Angles(3M), Derivatives(5M), nCr(3M), Binomial(5M+10M)</div>
+<div class="fbox fb-o"><b>Physics:</b> EOM(5M+10M), Projectile(3M), Kepler(5M), Escape(3M)</div>
+<div class="fbox fb-p"><b>Chem:</b> Gibbs(5M+10M), pH(2M+3M), Le Chatelier(3M), Hess(3M)</div>
+</div></div>
+</div>
+
+</div><!-- end studyApp -->
+
+<!-- SECRET DOT -->
+<button class="sdot" id="sdot"></button>
+
+<!-- PIN SCREEN -->
+<div id="pinScr">
+<div class="plock">🔐</div>
+<div class="ptitle">Secret Vault</div>
+<p style="font-size:11px;color:rgba(240,230,255,.25);margin-top:-8px;position:relative;z-index:1">Enter PIN</p>
+<div class="pdots"><div class="pdot" id="pd1"></div><div class="pdot" id="pd2"></div><div class="pdot" id="pd3"></div><div class="pdot" id="pd4"></div></div>
+<p class="perr" id="perr">❌ Wrong PIN</p>
+<div class="ppad">
+<button class="pkey" onclick="kp('1')">1</button><button class="pkey" onclick="kp('2')">2</button><button class="pkey" onclick="kp('3')">3</button>
+<button class="pkey" onclick="kp('4')">4</button><button class="pkey" onclick="kp('5')">5</button><button class="pkey" onclick="kp('6')">6</button>
+<button class="pkey" onclick="kp('7')">7</button><button class="pkey" onclick="kp('8')">8</button><button class="pkey" onclick="kp('9')">9</button>
+<button class="pkey" onclick="kp('*')">✳</button><button class="pkey" onclick="kp('0')">0</button><button class="pkey" onclick="kp('del')">⌫</button>
+</div>
+</div>
+
+<!-- MESSENGER -->
+<div id="msg">
+<div class="msg-bg"></div>
+<div class="stars" id="stars"></div>
+
+<!-- Header -->
+<div class="mhd">
+<div class="mhd-left">
+<div class="mav-wrap">
+<div class="mav">💕</div>
+<div class="mav-ring"></div>
+</div>
+<div>
+<div class="mname">My Love 💖</div>
+<div class="mstat-row"><div class="online"></div><div class="mstat" id="mstatText">Online</div></div>
+</div>
+</div>
+<div class="mhd-right">
+<!-- ★ Clear chat button -->
+<button class="clrbtn" onclick="askClearChat()">🗑 Clear</button>
+<button class="backbtn" onclick="closeM()">📚 Notes</button>
+</div>
+</div>
+
+<!-- Stories -->
+<div class="stories" id="storiesBar">
+<div class="story-item add-story" onclick="addStory()">
+<div class="story-ring"><div class="story-inner">➕</div></div>
+<div class="story-label">Add</div>
+</div>
+<div class="story-item" onclick="viewStory(0)">
+<div class="story-ring"><div class="story-inner">💕</div></div>
+<div class="story-label">Love</div>
+</div>
+<div class="story-item" onclick="viewStory(1)">
+<div class="story-ring"><div class="story-inner">✨</div></div>
+<div class="story-label">Today</div>
+</div>
+<div class="story-item story-seen" onclick="viewStory(2)">
+<div class="story-ring"><div class="story-inner">🌙</div></div>
+<div class="story-label">Night</div>
+</div>
+</div>
+
+<!-- DB Status -->
+<div class="dbbar"><div class="dbd" id="dbd"></div><span id="dbTxt">Connecting...</span></div>
+
+<!-- ★ NEW — Sender toggle bar -->
+<div class="sender-bar">
+<span>Sending as:</span>
+<div class="sender-toggle">
+<button class="st-btn active" id="senderMe" onclick="setSender('me')">💕 Me</button>
+<button class="st-btn" id="senderLove" onclick="setSender('love')">💜 Love</button>
+</div>
+</div>
+
+<!-- Messages -->
+<div class="msgs" id="msgs">
+<div style="text-align:center;color:rgba(240,230,255,.25);font-size:12px;padding:20px">Loading messages... 💕</div>
+</div>
+
+<!-- Typing indicator -->
+<div style="padding:0 12px 0;position:relative;z-index:1;flex-shrink:0">
+<div class="typing-ind" id="typingInd"><span class="td"></span><span class="td"></span><span class="td"></span></div>
+</div>
+
+<!-- Reply bar -->
+<div id="replyBar">
+<div class="reply-preview">
+<div class="rname">Replying to</div>
+<div class="rtext" id="replyText">message</div>
+</div>
+<button class="close-reply" onclick="cancelReply()">✕</button>
+</div>
+
+<!-- Input area -->
+<div class="inp-area">
+<div class="inp-actions">
+<button class="ibtn ebtn" onclick="toggleEmoji()">😊</button>
+<button class="ibtn pbtn" onclick="pickPhoto()">📷</button>
+</div>
+<textarea class="minp" id="minp" placeholder="Message..." rows="1" onkeydown="hk(event)" oninput="ah(this);onType()"></textarea>
+<div class="inp-actions">
+<button class="ibtn mic-btn" id="micBtn" onclick="toggleVoice()">🎤</button>
+<button class="ibtn rbtn2" onclick="sendReel()">🎬</button>
+<button class="ibtn sbtn" onclick="sendMsg()">➤</button>
+</div>
+</div>
+
+<!-- Emoji picker -->
+<div id="emojiPicker">
+<div class="emoji-grid">
+<div class="emoji-cat">Love</div>
+<div class="ej" onclick="addEmoji('💕')">💕</div><div class="ej" onclick="addEmoji('❤️')">❤️</div>
+<div class="ej" onclick="addEmoji('💗')">💗</div><div class="ej" onclick="addEmoji('💖')">💖</div>
+<div class="ej" onclick="addEmoji('🥰')">🥰</div><div class="ej" onclick="addEmoji('😘')">😘</div>
+<div class="ej" onclick="addEmoji('💑')">💑</div><div class="ej" onclick="addEmoji('💏')">💏</div>
+<div class="emoji-cat">Feel</div>
+<div class="ej" onclick="addEmoji('😭')">😭</div><div class="ej" onclick="addEmoji('🥺')">🥺</div>
+<div class="ej" onclick="addEmoji('😂')">😂</div><div class="ej" onclick="addEmoji('🤭')">🤭</div>
+<div class="ej" onclick="addEmoji('😌')">😌</div><div class="ej" onclick="addEmoji('🫶')">🫶</div>
+<div class="ej" onclick="addEmoji('✨')">✨</div><div class="ej" onclick="addEmoji('🌸')">🌸</div>
+<div class="emoji-cat">Vibes</div>
+<div class="ej" onclick="addEmoji('🔥')">🔥</div><div class="ej" onclick="addEmoji('💪')">💪</div>
+<div class="ej" onclick="addEmoji('🎯')">🎯</div><div class="ej" onclick="addEmoji('👑')">👑</div>
+<div class="ej" onclick="addEmoji('🌙')">🌙</div><div class="ej" onclick="addEmoji('⭐')">⭐</div>
+<div class="ej" onclick="addEmoji('🎶')">🎶</div><div class="ej" onclick="addEmoji('💜')">💜</div>
+</div>
+</div>
+</div>
+
+<!-- ★ Context Menu — with delete -->
+<div id="ctxMenu">
+<div class="ctx-item" onclick="ctxReply()"><span class="ctx-ico">↩️</span> Reply</div>
+<div class="ctx-item" onclick="ctxReact()"><span class="ctx-ico">💕</span> React</div>
+<div class="ctx-item" onclick="ctxCopy()"><span class="ctx-ico">📋</span> Copy</div>
+<div class="ctx-sep"></div>
+<div class="ctx-item danger" onclick="ctxDeleteOne()"><span class="ctx-ico">🗑️</span> Delete Message</div>
+</div>
+
+<!-- ★ Photo modal -->
+<div id="photoModal">
+<button class="pm-close" onclick="closePhoto()">✕</button>
+<img id="photoModalImg" src="" alt="">
+<div class="pm-actions">
+<button class="pm-btn" onclick="sendPhotoFromModal()">Send 💕</button>
+<button class="pm-btn" onclick="closePhoto()">Cancel</button>
+</div>
+</div>
+
+<!-- ★ Story viewer -->
+<div id="storyViewer">
+<div class="sv-bar"><div class="sv-seg"><div class="sv-fill" id="svFill"></div></div></div>
+<div class="sv-hd">
+<div class="sv-av">💕</div>
+<div><div class="sv-name">My Love</div><div class="sv-time" id="svTime">Just now</div></div>
+<button class="sv-close" onclick="closeStory()">✕</button>
+</div>
+<div class="sv-content" id="svContent"></div>
+<div class="sv-reply">
+<input class="sv-inp" id="svInp" placeholder="Reply to story...">
+<button class="sv-send" onclick="replyStory()">➤</button>
+</div>
+</div>
+
+<!-- ★ NEW — Confirm delete modal (for clear all OR single) -->
+<div id="delModal">
+<div class="del-box">
+<span class="del-ico" id="delIco">🗑️</span>
+<h3 id="delTitle">Delete?</h3>
+<p id="delDesc">This cannot be undone.</p>
+<div class="del-btns">
+<button class="del-cancel" onclick="closeDelModal()">Cancel</button>
+<button class="del-confirm" id="delConfirmBtn" onclick="doDelete()">Delete</button>
+</div>
+</div>
+</div>
+
+<input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, onValue, remove, update, query, limitToLast, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "moviesda-a9268.firebaseapp.com",
+databaseURL: "https://moviesda-a9268-default-rtdb.firebaseio.com",
+projectId: "moviesda-a9268",
+storageBucket: "moviesda-a9268.appspot.com",
+messagingSenderId: "YOUR_SENDER_ID",
+appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const msgsRef = ref(db, 'secret_msgs');
+const typingRef = ref(db, 'typing/user1');
+const seenRef = ref(db, 'seen');
+
+function setStatus(ok, txt) {
+document.getElementById('dbd').className = 'dbd' + (ok ? '' : ' err');
+document.getElementById('dbTxt').textContent = txt;
+}
+
+const q = query(msgsRef, limitToLast(200));
+onValue(q, (snap) => {
+const box = document.getElementById('msgs');
+box.innerHTML = '';
+if (!snap.exists()) {
+box.innerHTML = '<div style="text-align:center;color:rgba(240,230,255,.2);font-size:12px;padding:30px">No messages yet...<br>Say hi! 💕</div>';
+setStatus(true, '🟢 Firebase Connected');
+return;
+}
+setStatus(true, '🟢 Connected — Messages synced');
+let lastDate = '';
+snap.forEach(child => {
+const d = child.val(); const key = child.key;
+const msgDate = new Date(d.ts||Date.now()).toLocaleDateString('en-IN', {day:'numeric',month:'short'});
+if (msgDate !== lastDate) {
+const div = document.createElement('div'); div.className = 'mdiv'; div.textContent = msgDate;
+box.appendChild(div); lastDate = msgDate;
+}
+box.appendChild(buildMsgEl(d, key));
+});
+box.scrollTop = box.scrollHeight;
+update(seenRef, { lastSeen: Date.now() });
+}, err => setStatus(false, '❌ DB Error — Add API key'));
+
+onValue(ref(db, 'typing'), snap => {
+const t = snap.val(); const ind = document.getElementById('typingInd');
+ind.classList.toggle('show', !!(t && t.user2 && t.user2.typing));
+document.getElementById('mstatText').textContent = (t && t.user2 && t.user2.typing) ? 'typing...' : 'Online';
+});
+
+// ★ Build message element — now with sender name
+function buildMsgEl(d, key) {
+// Direction: 'out' = sent by me, 'in' = received from love
+const dir = d.dir || 'out';
+
+// ★ Sender name config
+const senderNames = { out: '💕 sarv', in: '💜ara ' };
+
+if (d.type === 'reel') {
+const wrap = document.createElement('div');
+wrap.className = `msg-wrap ${dir}`;
+wrap.innerHTML = `<div class="sender-name">${senderNames[dir]}</div>`;
+const el = document.createElement('div'); el.className = `rbub ${dir==='in'?'in':''}`; el.dataset.key = key; el.dataset.text = d.text;
+el.innerHTML = `<div class="rtop"><div class="rico2">🎬</div><div><div class="rlbl">Reel Share</div><div class="rsrc">Instagram · ${d.time||''}</div></div></div><div class="rcap">${d.text}</div>`;
+wrap.appendChild(el); addCtx(el, key, d.text); return wrap;
+}
+
+if (d.type === 'voice') {
+const bars = Array.from({length:20},()=>`<div class="vbar ${dir==='in'?'in':''}" style="height:${Math.random()*18+4}px"></div>`).join('');
+const wrap = document.createElement('div'); wrap.className = `msg-wrap ${dir}`;
+wrap.innerHTML = `<div class="sender-name">${senderNames[dir]}</div>`;
+const el = document.createElement('div'); el.className = `vnote ${dir==='in'?'in':''}`; el.dataset.key = key;
+el.innerHTML = `<button class="vplay" onclick="playVoice(this)">▶</button><div class="vwave">${bars}</div><span class="vdur">${d.dur||'0:10'}</span>`;
+wrap.appendChild(el); return wrap;
+}
+
+if (d.type === 'image') {
+const wrap = document.createElement('div'); wrap.className = `img-wrap ${dir==='in'?'in':''}`;
+wrap.innerHTML = `<div class="sender-name" style="${dir==='in'?'color:rgba(124,58,237,.8)':'color:rgba(255,77,166,.7)'}">${senderNames[dir]}</div>`;
+const inner = document.createElement('div'); inner.dataset.key = key;
+inner.innerHTML = `<img src="${d.imgData}" onclick="openPhotoView('${d.imgData}')"><div class="img-bub-meta"><span class="btime">${d.time||''}</span><span class="ticks ${d.seen?'seen':''}">✓✓</span></div>`;
+wrap.appendChild(inner); addCtx(inner, key, 'image'); return wrap;
+}
+
+// Text bubble
+const wrap = document.createElement('div'); wrap.className = `msg-wrap ${dir}`;
+wrap.innerHTML = `<div class="sender-name">${senderNames[dir]}</div>`;
+
+const el = document.createElement('div'); el.className = `bub ${dir}`; el.dataset.key = key; el.dataset.text = d.text||'';
+let inner = '';
+if (d.replyTo) inner += `<div class="reply-ref">↩ ${d.replyTo.substring(0,40)}...</div>`;
+inner += d.text||'';
+inner += `<div class="bub-meta"><span class="btime">${d.time||''}</span>`;
+if (dir === 'out') inner += `<span class="ticks ${d.seen?'seen':''}">✓✓</span>`;
+inner += '</div>';
+if (d.reactions && Object.keys(d.reactions).length) {
+inner += '<div class="reaction-row">'+Object.entries(d.reactions).map(([e,c])=>`<div class="react-badge" onclick="toggleReact('${key}','${e}')">${e} ${c}</div>`).join('')+'</div>';
+}
+el.innerHTML = inner;
+wrap.appendChild(el);
+addCtx(el, key, d.text||'');
+return wrap;
+}
+
+function addCtx(el, key, text) {
+el.addEventListener('contextmenu', e => { e.preventDefault(); showCtx(e, key, text); });
+el.addEventListener('touchstart', () => { window._ctxTimer = setTimeout(() => showCtx(null, key, text), 600); }, {passive:true});
+el.addEventListener('touchend', () => clearTimeout(window._ctxTimer));
+el.addEventListener('touchmove', () => clearTimeout(window._ctxTimer));
+}
+
+// Firebase API exports
+window.firebaseSend = d => push(msgsRef, {...d, ts: Date.now()}).catch(() => setStatus(false,'❌ Send failed'));
+window.firebaseDeleteOne = key => remove(ref(db, 'secret_msgs/'+key));
+window.firebaseClearAll = async () => {
+// Get all keys and delete them
+const snap = await get(msgsRef);
+if (!snap.exists()) return;
+const updates = {};
+snap.forEach(child => { updates['secret_msgs/'+child.key] = null; });
+update(ref(db), updates);
+};
+window.firebaseReact = (key, emoji) => {
+onValue(ref(db,'secret_msgs/'+key+'/reactions'), snap => {
+const cur = (snap.val()||{})[emoji] || 0;
+update(ref(db,'secret_msgs/'+key+'/reactions'), {[emoji]: cur+1});
+}, {onlyOnce:true});
+};
+window.setTyping = v => update(typingRef, {typing:v});
+setStatus(false, 'Connecting...');
+</script>
+
+<script>
+// ── Stars ──
+(function(){
+const s = document.getElementById('stars');
+for(let i=0;i<40;i++){
+const el=document.createElement('div'); el.className='star';
+const sz=Math.random()*2+1;
+el.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*4+2}s;--o1:${Math.random()*.3};--o2:${Math.random()*.7+.3}`;
+s.appendChild(el);
+}
+})();
+
+// ── Study app ──
+function filterMark(btn, chapId, mark) {
+const parent = btn.closest('.mark-filter');
+parent.querySelectorAll('.mf-btn').forEach(b => b.classList.remove('on'));
+btn.classList.add('on');
+const bd = btn.closest('.chap-bd');
+bd.querySelectorAll('.q-section').forEach(sec => {
+sec.style.display = (mark === 0 || parseInt(sec.dataset.mark) === mark) ? 'block' : 'none';
+});
+}
+function togQ(hd) { hd.classList.toggle('open'); hd.nextElementSibling.classList.toggle('open'); }
+function sw(id, el) {
+document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on'));
+document.getElementById('p-'+id).classList.add('on');
+el.classList.add('on'); window.scrollTo(0,0);
+}
+function tog(hd){hd.classList.toggle('open');hd.nextElementSibling.classList.toggle('open');}
+
+// ── PIN ──
+const MYPIN='2027';
+let pin='';
+document.getElementById('sdot').onclick=()=>{
+pin='';upd();document.getElementById('perr').style.display='none';
+document.getElementById('pinScr').style.display='flex';
+};
+function kp(k){
+if(k==='del'){pin=pin.slice(0,-1);upd();return;}
+if(pin.length>=4)return;
+pin+=k;upd();
+if(pin.length===4)setTimeout(chk,300);
+}
+function upd(){for(let i=1;i<=4;i++)document.getElementById('pd'+i).classList.toggle('on',i<=pin.length);}
+function chk(){
+if(pin===MYPIN){
+document.getElementById('pinScr').style.display='none';
+document.getElementById('msg').style.display='flex';
+setTimeout(()=>{const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight;},600);
+} else {
+const e=document.getElementById('perr');e.style.display='block';
+setTimeout(()=>{e.style.display='none';pin='';upd();},1200);
+}
+}
+function closeM(){document.getElementById('msg').style.display='none';window.setTyping&&window.setTyping(false);}
+
+// ── Time ──
+function gt(){const d=new Date(),h=d.getHours(),m=d.getMinutes(),ap=h>=12?'PM':'AM';return`${h%12||12}:${String(m).padStart(2,'0')} ${ap}`;}
+
+// ── ★ Sender toggle ──
+let currentSender = 'me'; // 'me' = out, 'love' = in
+function setSender(who) {
+currentSender = who;
+document.getElementById('senderMe').classList.toggle('active', who==='me');
+document.getElementById('senderLove').classList.toggle('active', who==='love');
+}
+
+// ── Reply ──
+let replyTo = null;
+function setReply(text){replyTo=text;document.getElementById('replyText').textContent=text.substring(0,50);document.getElementById('replyBar').classList.add('show');document.getElementById('minp').focus();}
+function cancelReply(){replyTo=null;document.getElementById('replyBar').classList.remove('show');}
+
+// ── Send ──
+function sendMsg(){
+const i=document.getElementById('minp'),t=i.value.trim();
+if(!t)return;
+const dir = currentSender==='me' ? 'out' : 'in';
+const data={type:'text',text:t,dir,time:gt()};
+if(replyTo) data.replyTo=replyTo;
+window.firebaseSend&&window.firebaseSend(data);
+i.value='';i.style.height='auto';cancelReply();
+if(dir==='out') heart();
+window.setTyping&&window.setTyping(false);
+}
+
+// ── Reel ──
+function sendReel(){
+const dir = currentSender==='me'?'out':'in';
+const caps=['😂 Un kooda feel da!','🥺 Itha pathutu un kanava...','💜 Accurate ah iruku!','😭 Un maela than!','🎵 Un kooda kaekanum!'];
+window.firebaseSend&&window.firebaseSend({type:'reel',text:caps[Math.floor(Math.random()*caps.length)],dir,time:gt()});
+}
+
+// ── Voice ──
+let voiceRecording=false,voiceTimer=null,voiceSecs=0;
+function toggleVoice(){
+const btn=document.getElementById('micBtn');
+if(!voiceRecording){
+voiceRecording=true;voiceSecs=0;btn.classList.add('recording');btn.textContent='⏹';
+voiceTimer=setInterval(()=>voiceSecs++,1000);
+} else {
+voiceRecording=false;clearInterval(voiceTimer);btn.classList.remove('recording');btn.textContent='🎤';
+const dur=`${Math.floor(voiceSecs/60)}:${String(voiceSecs%60).padStart(2,'0')}`;
+const dir=currentSender==='me'?'out':'in';
+window.firebaseSend&&window.firebaseSend({type:'voice',dir,dur,time:gt()});
+}
+}
+function playVoice(btn){btn.textContent=btn.textContent==='▶'?'⏸':'▶';}
+
+// ── Emoji ──
+let emojiOpen=false;
+function toggleEmoji(){emojiOpen=!emojiOpen;document.getElementById('emojiPicker').classList.toggle('show',emojiOpen);}
+function addEmoji(e){const i=document.getElementById('minp');i.value+=e;i.focus();}
+document.addEventListener('click',e=>{
+if(emojiOpen&&!e.target.closest('#emojiPicker')&&!e.target.closest('.ebtn')){emojiOpen=false;document.getElementById('emojiPicker').classList.remove('show');}
+if(!e.target.closest('#ctxMenu')&&!e.target.closest('#delModal'))closeCtx();
+});
+
+// ── Photo ──
+let pendingPhoto=null;
+function pickPhoto(){document.getElementById('photoInput').click();}
+function handlePhoto(e){
+const file=e.target.files[0];if(!file)return;
+const reader=new FileReader();
+reader.onload=ev=>{pendingPhoto=ev.target.result;document.getElementById('photoModalImg').src=pendingPhoto;document.getElementById('photoModal').classList.add('show');};
+reader.readAsDataURL(file);
+}
+function sendPhotoFromModal(){
+if(pendingPhoto){
+const dir=currentSender==='me'?'out':'in';
+window.firebaseSend&&window.firebaseSend({type:'image',imgData:pendingPhoto,dir,time:gt()});
+pendingPhoto=null;closePhoto();if(dir==='out')heart();
+}
+}
+function closePhoto(){document.getElementById('photoModal').classList.remove('show');}
+function openPhotoView(src){document.getElementById('photoModalImg').src=src;document.getElementById('photoModal').classList.add('show');}
+
+// ── Stories ──
+const stories=[
+{content:'💕 Un maela love iruku... always and forever 🌸✨',time:'Just now'},
+{content:'🌟 Ippo feel aagura happiness... you give me that 😌💜',time:'2 hours ago'},
+{content:'🌙 Late night thoughts about you...\n\nMiss you di 💗',time:'Yesterday'},
+];
+let storyTimer=null;
+function viewStory(idx){
+const s=stories[idx]||stories[0];
+document.getElementById('svContent').textContent=s.content;
+document.getElementById('svTime').textContent=s.time;
+document.getElementById('storyViewer').classList.add('show');
+const fill=document.getElementById('svFill');
+fill.style.width='0%';fill.style.transition='none';
+setTimeout(()=>{fill.style.transition='width 5s linear';fill.style.width='100%';},50);
+storyTimer=setTimeout(closeStory,5100);
+}
+function closeStory(){document.getElementById('storyViewer').classList.remove('show');clearTimeout(storyTimer);}
+function addStory(){const text=prompt('Add your story 💕');if(text){stories.unshift({content:text,time:'Just now'});}}
+function replyStory(){const t=document.getElementById('svInp').value.trim();if(!t)return;window.firebaseSend&&window.firebaseSend({type:'text',text:'Story reply: '+t,dir:'out',time:gt()});document.getElementById('svInp').value='';closeStory();}
+
+// ── Context menu ──
+let ctxKey=null,ctxText='';
+function showCtx(e,key,text){
+ctxKey=key;ctxText=text;
+const menu=document.getElementById('ctxMenu');menu.classList.add('show');
+if(e){let x=e.clientX,y=e.clientY;if(x+170>window.innerWidth)x=window.innerWidth-175;if(y+180>window.innerHeight)y=window.innerHeight-185;menu.style.left=x+'px';menu.style.top=y+'px';}
+else{menu.style.left='50%';menu.style.top='50%';menu.style.transform='translate(-50%,-50%)';}
+}
+function closeCtx(){document.getElementById('ctxMenu').classList.remove('show');document.getElementById('ctxMenu').style.transform='';}
+function ctxReply(){if(ctxText&&ctxText!=='image')setReply(ctxText);closeCtx();}
+function ctxReact(){if(ctxKey)window.firebaseReact&&window.firebaseReact(ctxKey,'💕');closeCtx();}
+function ctxCopy(){if(ctxText&&ctxText!=='image')navigator.clipboard?.writeText(ctxText).catch(()=>{});closeCtx();}
+function toggleReact(key,emoji){window.firebaseReact&&window.firebaseReact(key,emoji);}
+
+// ── ★ Delete logic ──
+let deleteMode = null; // 'one' or 'all'
+
+// Delete single message (from context menu)
+function ctxDeleteOne(){
+if(!ctxKey){closeCtx();return;}
+deleteMode='one';
+document.getElementById('delIco').textContent='🗑️';
+document.getElementById('delTitle').textContent='Delete this message?';
+document.getElementById('delDesc').textContent='This message will be removed for everyone.';
+document.getElementById('delModal').classList.add('show');
+closeCtx();
+}
+
+// Clear all chat (from header button)
+function askClearChat(){
+deleteMode='all';
+document.getElementById('delIco').textContent='💣';
+document.getElementById('delTitle').textContent='Clear all chat?';
+document.getElementById('delDesc').textContent='All messages will be deleted permanently.';
+document.getElementById('delModal').classList.add('show');
+}
+
+function closeDelModal(){
+document.getElementById('delModal').classList.remove('show');
+deleteMode=null;
+}
+
+function doDelete(){
+if(deleteMode==='one' && ctxKey){
+window.firebaseDeleteOne&&window.firebaseDeleteOne(ctxKey);
+ctxKey=null;
+} else if(deleteMode==='all'){
+window.firebaseClearAll&&window.firebaseClearAll();
+}
+closeDelModal();
+}
+
+// ── Typing ──
+let typingTimeout=null;
+function onType(){window.setTyping&&window.setTyping(true);clearTimeout(typingTimeout);typingTimeout=setTimeout(()=>window.setTyping&&window.setTyping(false),2000);}
+
+// ── Hearts ──
+function heart(){
+const emojis=['💗','💕','💖','✨','💜','🌸','😘','💝','🫶'];
+for(let i=0;i<3;i++){setTimeout(()=>{const el=document.createElement('div');el.className='hf';el.textContent=emojis[Math.floor(Math.random()*emojis.length)];el.style.cssText=`left:${Math.random()*60+20}%;bottom:65px;font-size:${Math.random()*12+14}px`;document.body.appendChild(el);setTimeout(()=>el.remove(),1300);},i*200);}
+}
+
+// ── Input helpers ──
+function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function ah(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+</script>
+</body>
+</html>
